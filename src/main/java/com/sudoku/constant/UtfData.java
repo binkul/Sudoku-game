@@ -3,6 +3,12 @@ package com.sudoku.constant;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * You have to add to your Intellij->Help->'Edit Custom VM Options' at the end:
+ * -Dfile.encoding=UTF-8
+ * -Dconsole.encoding=UTF-8
+ * otherwise you will see only ?????
+ */
 public class UtfData {
     private static final String UTF_EQUALS = "\u2550";
     private static final String UTF_MINUS = "\u2500";
