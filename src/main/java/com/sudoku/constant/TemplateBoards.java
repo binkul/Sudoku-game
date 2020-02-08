@@ -2,85 +2,89 @@ package com.sudoku.constant;
 
 import com.sudoku.field.SudokuBoard;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class TemplateBoards {
+    private static final String path = "template/boards.txt";
     private static final Random RANDOM = new Random();
-    private static final String[][] EXAMPLE_BOARDS = {
-            {       "0|3|0|0|7|0|0|0|0",
-                    "6|0|0|1|9|5|0|0|0",
-                    "0|9|8|0|0|0|0|6|0",
-                    "8|0|0|0|6|0|0|0|3",
-                    "0|0|0|8|0|3|0|0|1",
-                    "7|0|0|0|2|0|0|0|6",
-                    "0|6|0|0|0|0|2|8|0",
-                    "0|0|0|4|0|9|0|0|0",
-                    "0|0|0|0|8|0|0|7|9"},
 
-            {       "0|1|0|0|0|3|0|0|0",
-                    "0|3|0|0|8|0|0|4|6",
-                    "0|0|7|0|0|0|2|0|0",
-                    "6|0|0|8|0|1|0|0|0",
-                    "0|8|0|0|3|0|0|5|0",
-                    "0|0|0|4|0|7|0|0|9",
-                    "0|0|6|0|0|0|5|0|0",
-                    "5|7|0|0|2|0|0|9|0",
-                    "0|0|0|1|0|0|0|7|0"},
+    private List<SudokuBoard> sudokuBoards = new ArrayList<>();
 
-            {       "0|0|0|2|1|0|0|0|0",
-                    "0|0|7|3|0|0|0|0|0",
-                    "0|5|8|0|0|0|0|0|0",
-                    "4|3|0|0|0|0|0|0|0",
-                    "2|0|0|0|0|0|0|0|8",
-                    "0|0|0|0|0|0|0|7|6",
-                    "0|0|0|0|0|0|2|5|0",
-                    "0|0|0|0|0|7|3|0|0",
-                    "0|0|0|0|9|8|0|0|0"},
+    public TemplateBoards() {
+        generateTemplates();
+    }
 
-            {       "0|0|0|0|0|0|0|0|0",
-                    "0|0|0|0|0|0|0|0|0",
-                    "0|0|0|0|0|0|0|0|0",
-                    "0|0|0|0|0|0|0|0|0",
-                    "9|0|0|0|0|5|6|7|8",
-                    "0|0|0|0|1|0|0|0|0",
-                    "0|0|0|0|2|0|0|0|0",
-                    "0|0|0|0|0|0|0|0|0",
-                    "0|0|0|0|4|0|0|0|0"},
+    public SudokuBoard getSudokuTemplate() {
+        int nr = RANDOM.nextInt(sudokuBoards.size());
+        return sudokuBoards.get(nr).deepCopy();
+    }
 
-            {       "0|3|0|0|7|0|0|0|0",
-                    "6|0|0|1|0|5|0|0|0",
-                    "0|9|0|0|0|0|0|0|0",
-                    "8|0|0|0|6|0|0|0|3",
-                    "0|0|0|8|0|0|0|0|0",
-                    "7|0|0|0|0|0|0|0|6",
-                    "0|0|0|0|0|0|2|0|0",
-                    "0|0|0|4|0|0|0|0|0",
-                    "0|0|0|0|0|0|0|0|9"},
-
-            {       "0|0|0|0|0|0|0|0|0",
-                    "0|0|0|0|0|0|0|0|0",
-                    "0|0|0|0|0|0|0|0|0",
-                    "0|0|0|0|0|0|0|0|0",
-                    "0|0|0|0|0|0|0|0|0",
-                    "0|0|0|0|0|0|0|0|0",
-                    "0|0|0|0|0|0|0|0|0",
-                    "0|0|0|0|0|0|0|0|0",
-                    "0|0|0|0|0|0|0|0|0"}
-    };
-
-
-    public static SudokuBoard getSudokuTemplate() {
+    private void generateTemplates() {
         SudokuBoard sudokuBoard = new SudokuBoard();
-        int nr = RANDOM.nextInt(EXAMPLE_BOARDS.length);
-        String[] lines = EXAMPLE_BOARDS[nr];
-        for (int i = 0; i < 9; i++) {
-            String[] values = lines[i].split("\\|");
-            for (int j = 0; j < 9; j++) {
-                if (!values[j].equals("0")) {
-                    sudokuBoard.setNumber(i, j, Integer.parseInt(values[j]));
-                }
+        List<String> templates = readTemplates();
+        int rowIndex = 0;
+        String row;
+        if (templates == null) return;
+
+        for (int i = 0; i < templates.size(); i++) {
+            row = templates.get(i);
+            if(row.toLowerCase().equals("start")) {
+                sudokuBoard = new SudokuBoard();
+                sudokuBoards.add(sudokuBoard);
+                rowIndex = 0;
+            } else if (row.length() == 17) {
+                setRow(sudokuBoard, row, rowIndex);
+                rowIndex++;
+            } else {
+                printLogError(row);
             }
         }
-        return sudokuBoard;
+    }
+
+    private void setRow(SudokuBoard sudokuBoard, String row, int rowIndex) {
+        if (rowIndex > Data.DIMENSION) return;
+
+        String[] values = row.split("\\|");
+        for (int columnIndex = 0; columnIndex < Data.DIMENSION; columnIndex++) {
+            if (!values[columnIndex].equals("0")) {
+                sudokuBoard.setNumber(rowIndex, columnIndex, Integer.parseInt(values[columnIndex]));
+            }
+        }
+    }
+
+    private void printLogError(String row) {
+        System.out.println("Error in line: '" + row + "'");
+    }
+
+    private boolean isFileExist(String fullPath) {
+        return new File(fullPath).exists();
+    }
+
+    private List<String> readTemplates() {
+        String fullPath = getPath(path).replace("file:/", "");
+        try {
+            if (isFileExist(fullPath)) {
+                return Files.readAllLines(Paths.get(fullPath));
+            }
+        } catch (IOException ex) {
+            System.out.println("File '" + fullPath + "' is empty!");
+        }
+        return null;
+    }
+
+    private String getPath(String path) {
+        ClassLoader loader = getClass().getClassLoader();
+        Object object = loader.getResource(path);
+        if (object != null) {
+            return object.toString().replaceAll("%20", " ");
+        } else {
+            return "";
+        }
     }
 }

@@ -1,15 +1,15 @@
 package com.sudoku.field;
 
 import com.sudoku.constant.ConsoleColors;
-import com.sudoku.constant.UtfData;
 import com.sudoku.constant.Data;
+import com.sudoku.constant.UtfData;
 
-public class PrintUtf implements Printable{
+public class PrintFrameBoard implements Printable{
     private static final String FRAME_COLOR = ConsoleColors.RESET.getCode();
     private static final String NORMAL_COLOR = ConsoleColors.RESET.getCode();
     private final SudokuBoard sudokuBoard;
 
-    public PrintUtf(SudokuBoard sudokuBoard) {
+    public PrintFrameBoard(SudokuBoard sudokuBoard) {
         this.sudokuBoard = sudokuBoard;
     }
 
@@ -22,7 +22,7 @@ public class PrintUtf implements Printable{
             System.out.print(row + 1);
             printRow(row);
         }
-        System.out.println(FRAME_COLOR);
+        System.out.print(FRAME_COLOR);
         System.out.println(" " + UtfData.UTF_LINE_BOTTOM);
         System.out.print(NORMAL_COLOR);
     }

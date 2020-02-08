@@ -8,23 +8,26 @@ import com.sudoku.solver.algorithm.Validator;
 
 public class TemplateGame implements Gameable {
     private final Terminal terminal;
+    private final TemplateBoards templateBoards;
 
     public TemplateGame() {
         terminal = new Terminal();
+        templateBoards = new TemplateBoards();
     }
 
     @Override
-    public boolean resolveSudoku() {
+    public void resolveSudoku() {
         boolean newGame = terminal.startNewGame();
         if (newGame) {
             startGame();
+        } else {
+            System.exit(0);
         }
-        return !newGame;
     }
 
     @Override
     public void startGame() {
-        SudokuBoard sudokuBoard = TemplateBoards.getSudokuTemplate();
+        SudokuBoard sudokuBoard = templateBoards.getSudokuTemplate();
         System.out.println("Sudoku before resolve:");
         sudokuBoard.print();
         if (Validator.checkSudoku(sudokuBoard)) {

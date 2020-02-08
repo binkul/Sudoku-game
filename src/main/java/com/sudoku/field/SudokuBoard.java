@@ -12,7 +12,7 @@ public class SudokuBoard {
     private List<SudokuRow> rows;
 
     public SudokuBoard() {
-        this.printBoard = new PrintNormal(this);
+        this.printBoard = new PrintFrameBoard(this);
         rows = createRows();
     }
 
@@ -26,7 +26,7 @@ public class SudokuBoard {
         return rows;
     }
 
-    public SudokuRow getRow(int rowIndex) {
+    private SudokuRow getRow(int rowIndex) {
         return rows.get(rowIndex);
     }
 
@@ -34,33 +34,23 @@ public class SudokuBoard {
         return getRow(rowIndex).getSudokuElement(columnIndex);
     }
 
-    /**
-     * set number via row, column and number
-     */
     public void setNumber(int rowIndex, int columnIndex, int number) {
         getElement(rowIndex, columnIndex).setNumber(number);
-    }
-
-    /**
-     * set number via row, column, number and additional console font color
-     */
-    public void setNumber(int rowIndex, int columnIndex, int number, String fontColor) {
-        getElement(rowIndex, columnIndex).setNumber(number, fontColor);
     }
 
     public int getNumber(int rowIndex, int columnIndex) {
         return getElement(rowIndex, columnIndex).getNumber();
     }
 
-    public void setCandidates(int rowIndex, int columnIndex, List<Integer> numbers) {
+    private void setCandidates(int rowIndex, int columnIndex, List<Integer> numbers) {
         getElement(rowIndex, columnIndex).setCandidates(numbers);
     }
 
-    public String getFontColor(int rowIndex, int columnIndex) {
+    String getFontColor(int rowIndex, int columnIndex) {
         return getElement(rowIndex, columnIndex).getFontColor();
     }
 
-    public void setFontColor(int rowIndex, int columnIndex, String fontColor) {
+    private void setFontColor(int rowIndex, int columnIndex, String fontColor) {
         getElement(rowIndex, columnIndex).setFontColor(fontColor);
     }
 

@@ -7,11 +7,9 @@ import com.sudoku.user.TerminalGame;
 public class SudokuGame {
 
     public static void main(String[] args) {
-        boolean gameFinished = false;
-
-        while(!gameFinished) {
+        while(true) {
             Gameable theGame = new TerminalGame();
-            gameFinished = theGame.resolveSudoku();
+            theGame.resolveSudoku();
         }
     }
 }

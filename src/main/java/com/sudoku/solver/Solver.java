@@ -23,10 +23,8 @@ public class Solver {
 
     public boolean process() {
         runStandard(sudokuBoard);
-        // run twice, because after start List<Integer> candidates of SudokuElement is full filled,
-        // first run removes repeated candidates, second check unique values in candidates
-        runStandard(sudokuBoard);
-        if (runStandard(sudokuBoard) == Result.FULL_FILLED) {
+        Result enterRun = runStandard(sudokuBoard);
+        if (enterRun == Result.FULL_FILLED) {
             return true;
         } else {
             return solverBackTrack.process(sudokuBoard);

@@ -3,11 +3,11 @@ package com.sudoku.field;
 import com.sudoku.constant.ConsoleColors;
 import com.sudoku.constant.Data;
 
-public class PrintNormal implements Printable {
+public class PrintStandardBoard implements Printable {
     private static final String NORMAL_COLOR = ConsoleColors.RESET.getCode();
     private final SudokuBoard sudokuBoard;
 
-    public PrintNormal(SudokuBoard sudokuBoard) {
+    public PrintStandardBoard(SudokuBoard sudokuBoard) {
         this.sudokuBoard = sudokuBoard;
     }
 
@@ -45,6 +45,4 @@ public class PrintNormal implements Printable {
             System.out.println(" " + Data.MINUS_LINE);
         }
     }
-
-
 }

@@ -18,12 +18,13 @@ public class TerminalGame implements Gameable {
     }
 
     @Override
-    public boolean resolveSudoku() {
+    public void resolveSudoku() {
         boolean newGame = terminal.startNewGame();
         if (newGame) {
             startGame();
+        } else {
+            System.exit(0);
         }
-        return !newGame;
     }
 
     @Override
