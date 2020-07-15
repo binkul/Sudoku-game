@@ -1,23 +1,23 @@
 package com.sudoku.user;
 
-import com.sudoku.constant.TemplateBoards;
 import com.sudoku.constant.Data;
+import com.sudoku.constant.TemplateBoards;
 import com.sudoku.field.SudokuBoard;
 import com.sudoku.solver.Solver;
 import com.sudoku.solver.algorithm.Validator;
 
 public class TemplateGame implements Gameable {
-    private final Terminal terminal;
+    private final GameFlow gameFlow;
     private final TemplateBoards templateBoards;
 
-    public TemplateGame() {
-        terminal = new Terminal();
+    public TemplateGame(GameFlow gameFlow) {
+        this.gameFlow = gameFlow;
         templateBoards = new TemplateBoards();
     }
 
     @Override
     public void resolveSudoku() {
-        boolean newGame = terminal.startNewGame();
+        boolean newGame = gameFlow.startNewRound();
         if (newGame) {
             startGame();
         } else {
@@ -29,11 +29,11 @@ public class TemplateGame implements Gameable {
     public void startGame() {
         SudokuBoard sudokuBoard = templateBoards.getSudokuTemplate();
         System.out.println("Sudoku before resolve:");
-        sudokuBoard.print();
+        gameFlow.printBoard(sudokuBoard);
         if (Validator.checkSudoku(sudokuBoard)) {
             run(sudokuBoard);
         } else {
-            terminal.printInputSudokuError();
+            gameFlow.getTerminal().printInputSudokuError();
         }
     }
 
@@ -41,12 +41,12 @@ public class TemplateGame implements Gameable {
         Solver solver = new Solver(sudokuBoard);
 
         if (solver.process()) {
-            terminal.printSolution();
+            gameFlow.getTerminal().printSolution();
             sudokuBoard = solver.getSudokuBoard();
-            sudokuBoard.print();
+            gameFlow.printBoard(sudokuBoard);
             System.out.println(Data.LEGEND);
         } else {
-            terminal.printNoSolution();
+            gameFlow.getTerminal().printNoSolution();
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.sudoku;
 
 import com.sudoku.field.*;
+import com.sudoku.user.GameFlow;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,8 +50,6 @@ public class BoardCreationAndCopyTestSuite {
         SudokuBoard deepCopy = sudokuBoard.deepCopy();
         int number1 = deepCopy.getNumber(0,1);
         int number2 = deepCopy.getNumber(5,5);
-        sudokuBoard.print();
-        deepCopy.print();
 
         //Then
         Assert.assertEquals(9, number1);
@@ -70,8 +69,6 @@ public class BoardCreationAndCopyTestSuite {
         deepCopy.setNumber(8, 8, 6);
         int number1 = deepCopy.getNumber(8,8);
         int number2 = sudokuBoard.getNumber(8,8);
-        sudokuBoard.print();
-        deepCopy.print();
 
         //Then
         Assert.assertEquals(6, number1);
@@ -123,7 +120,6 @@ public class BoardCreationAndCopyTestSuite {
         SudokuElement element3 = elements.get(3);
         SudokuElement element4 = elements.get(7);
         SudokuElement element5 = elements.get(8);
-        sudokuBoard.print();
         System.out.println(element2);
         System.out.println(element4);
         System.out.println(element5);

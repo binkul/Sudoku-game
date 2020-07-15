@@ -1,13 +1,16 @@
 package com.sudoku.user;
 
 import com.sudoku.constant.ConsoleColors;
+import com.sudoku.field.PrintFrameBoard;
+import com.sudoku.field.PrintStandardBoard;
+import com.sudoku.field.Printable;
 
 import java.util.Scanner;
 
 public class Terminal {
     private static final Scanner SCANNER = new Scanner(System.in);
 
-    public boolean startNewGame() {
+    public boolean startNewRound() {
         do {
             printInvitation();
             String answer = SCANNER.nextLine();
@@ -16,7 +19,21 @@ public class Terminal {
             } else if (answer.toLowerCase().equals("n")) {
                 return false;
             } else {
-                printInvitationError();
+                printError("[y]/[n]");
+            }
+        } while (true);
+    }
+
+    public Printable setPrintType() {
+        do {
+            printChosePrintType();
+            String answer = SCANNER.nextLine();
+            if (answer.equals("1")) {
+                return new PrintStandardBoard();
+            } else if (answer.equals("2")) {
+                return new PrintFrameBoard();
+            } else {
+                printError("[1]/[2]");
             }
         } while (true);
     }
@@ -25,8 +42,14 @@ public class Terminal {
         System.out.println("\nStart new Game [y], or Exit [n]");
     }
 
-    private void printInvitationError() {
-        System.out.println("Only [y]/[n] are allowed!");
+    private void printError(String allowedType) {
+        System.out.println(String.format("Only %s are allowed!", allowedType));
+    }
+
+    private void printChosePrintType() {
+        System.out.println("\nChose print type:");
+        System.out.println("[1] - Standard print");
+        System.out.println("[2] - Pretty print");
     }
 
     String getData() {
@@ -63,5 +86,4 @@ public class Terminal {
     void printSolution() {
         System.out.println("\nSolution of the Sudoku:");
     }
-
 }

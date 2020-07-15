@@ -8,11 +8,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SudokuBoard {
-    private final Printable printBoard;
     private List<SudokuRow> rows;
 
     public SudokuBoard() {
-        this.printBoard = new PrintFrameBoard(this);
         rows = createRows();
     }
 
@@ -93,9 +91,5 @@ public class SudokuBoard {
         }
 
         return clonedBoard;
-    }
-
-    public void print() {
-        printBoard.print();
     }
 }

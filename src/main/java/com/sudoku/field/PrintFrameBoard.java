@@ -7,27 +7,22 @@ import com.sudoku.constant.UtfData;
 public class PrintFrameBoard implements Printable{
     private static final String FRAME_COLOR = ConsoleColors.RESET.getCode();
     private static final String NORMAL_COLOR = ConsoleColors.RESET.getCode();
-    private final SudokuBoard sudokuBoard;
-
-    public PrintFrameBoard(SudokuBoard sudokuBoard) {
-        this.sudokuBoard = sudokuBoard;
-    }
 
     @Override
-    public void print() {
+    public void print(SudokuBoard sudokuBoard) {
         System.out.println(UtfData.UTF_TOP_COUNT);
         System.out.print(FRAME_COLOR);
         System.out.println(" " + UtfData.UTF_LINE_TOP);
         for (int row = 0; row < Data.DIMENSION; row++) {
             System.out.print(row + 1);
-            printRow(row);
+            printRow(sudokuBoard, row);
         }
         System.out.print(FRAME_COLOR);
         System.out.println(" " + UtfData.UTF_LINE_BOTTOM);
         System.out.print(NORMAL_COLOR);
     }
 
-    private void printRow(int row) {
+    private void printRow(SudokuBoard sudokuBoard, int row) {
         StringBuilder line = new StringBuilder();
         int number;
         String fontColor;

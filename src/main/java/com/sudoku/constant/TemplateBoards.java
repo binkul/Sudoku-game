@@ -30,6 +30,7 @@ public class TemplateBoards {
         List<String> templates = readTemplates();
         int rowIndex = 0;
         String row;
+
         if (templates == null) return;
 
         for (int i = 0; i < templates.size(); i++) {

@@ -5,23 +5,18 @@ import com.sudoku.constant.Data;
 
 public class PrintStandardBoard implements Printable {
     private static final String NORMAL_COLOR = ConsoleColors.RESET.getCode();
-    private final SudokuBoard sudokuBoard;
-
-    public PrintStandardBoard(SudokuBoard sudokuBoard) {
-        this.sudokuBoard = sudokuBoard;
-    }
 
     @Override
-    public void print() {
+    public void print(SudokuBoard sudokuBoard) {
         System.out.println(Data.TOP_COUNT);
         System.out.println(" " + Data.MINUS_LINE);
         for (int row = 0; row < Data.DIMENSION; row++) {
             System.out.print(row + 1);
-            printRow(row);
+            printRow(sudokuBoard, row);
         }
     }
 
-    private void printRow(int row) {
+    private void printRow(SudokuBoard sudokuBoard, int row) {
         StringBuilder line = new StringBuilder();
         String fontColor;
         int number;

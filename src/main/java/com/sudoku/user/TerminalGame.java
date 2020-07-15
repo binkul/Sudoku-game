@@ -6,20 +6,20 @@ import com.sudoku.solver.Solver;
 import com.sudoku.solver.algorithm.Validator;
 
 public class TerminalGame implements Gameable {
-    private final Terminal terminal;
+    private final GameFlow gameFlow;
     private final Solver solver;
     private SudokuBoard sudokuBoard;
     private int row, column, number;
 
-    public TerminalGame() {
-        terminal = new Terminal();
+    public TerminalGame(GameFlow gameFlow) {
+        this.gameFlow = gameFlow;
         sudokuBoard = new SudokuBoard();
         solver = new Solver(sudokuBoard);
     }
 
     @Override
     public void resolveSudoku() {
-        boolean newGame = terminal.startNewGame();
+        boolean newGame = gameFlow.startNewRound();
         if (newGame) {
             startGame();
         } else {
@@ -31,14 +31,14 @@ public class TerminalGame implements Gameable {
     public void startGame() {
         Command command = Command.WAIT;
         while (command != Command.START) {
-            sudokuBoard.print();
-            command = inputData(terminal.getData());
+            gameFlow.printBoard(sudokuBoard);
+            command = inputData(gameFlow.getTerminal().getData());
             if (command == Command.EXIT) return;
         }
         if (Validator.checkSudoku(sudokuBoard)) {
             run(solver);
         } else {
-            terminal.printInputSudokuError();
+            gameFlow.getTerminal().printInputSudokuError();
         }
     }
 
@@ -51,7 +51,7 @@ public class TerminalGame implements Gameable {
             if (validate(value)) {
                 sudokuBoard.setNumber(row - 1, column - 1, number);
             } else {
-                terminal.printInputDataError(value);
+                gameFlow.getTerminal().printInputDataError(value);
             }
         }
         return Command.WAIT;
@@ -59,12 +59,12 @@ public class TerminalGame implements Gameable {
 
     private void run(Solver solver) {
         if (solver.process()) {
-            terminal.printSolution();
+            gameFlow.getTerminal().printSolution();
             sudokuBoard = solver.getSudokuBoard();
-            sudokuBoard.print();
+            gameFlow.printBoard(sudokuBoard);
             System.out.println(Data.LEGEND);
         } else {
-            terminal.printNoSolution();
+            gameFlow.getTerminal().printNoSolution();
         }
     }
 

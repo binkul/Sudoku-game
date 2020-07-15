@@ -1,5 +1,5 @@
 package com.sudoku.field;
 
 public interface Printable {
-    void print();
+    void print(SudokuBoard sudokuBoard);
 }
